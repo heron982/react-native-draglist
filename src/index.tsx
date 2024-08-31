@@ -418,14 +418,15 @@ function CellRendererComponent<T>(props: CellRendererProps<T>) {
       {...rest}
       style={[
         style,
+        focusedIndex !== undefined && focusedIndex === index
+          ? { zIndex: 999 }
+          : { zIndex: 0 },
         isActive
           ? {
               elevation: 1,
               zIndex: 999,
               transform: [{ translateY: pan }],
             }
-          : focusedIndex !== undefined && focusedIndex === index
-          ? { zIndex: 999 }
           : {
               elevation: 0,
               zIndex: 0,
