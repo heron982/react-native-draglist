@@ -327,9 +327,7 @@ function DragListImpl<T>(
           keyExtractor={keyExtractor}
           data={data}
           renderItem={renderDragItem}
-          CellRendererComponent={prps =>
-            CellRendererComponent({ ...prps, focusedIndex: props.focusedIndex })
-          }
+          CellRendererComponent={CellRendererComponent}
           extraData={extra}
           scrollEnabled={!activeKey.current}
           onScroll={onDragScroll}
@@ -354,8 +352,7 @@ type CellRendererProps<T> = {
 };
 
 function CellRendererComponent<T>(props: CellRendererProps<T>) {
-  const { item, index, children, style, onLayout, focusedIndex, ...rest } =
-    props;
+  const { item, index, children, style, onLayout, ...rest } = props;
   const { keyExtractor, activeKey, activeIndex, pan, panIndex, layouts } =
     useDragListContext<T>();
   const [isOffset, setIsOffset] = useState(false); // Whether anim != 0
