@@ -92,6 +92,7 @@ function DragListImpl<T>(
     onScroll,
     onLayout,
     renderItem,
+    focusedIndex,
     ...rest
   } = props;
   // activeKey and activeIndex track the item being dragged
@@ -306,6 +307,7 @@ function DragListImpl<T>(
       pan={pan}
       panIndex={panIndex.current}
       layouts={layouts}
+      focusedIndex={focusedIndex}
     >
       <View
         ref={flatWrapRef}
@@ -327,9 +329,7 @@ function DragListImpl<T>(
           keyExtractor={keyExtractor}
           data={data}
           renderItem={renderDragItem}
-          CellRendererComponent={({ ...props }) =>
-            CellRendererComponent<T>(props)
-          }
+          CellRendererComponent={CellRendererComponent}
           extraData={extra}
           scrollEnabled={!activeKey.current}
           onScroll={onDragScroll}
@@ -355,8 +355,15 @@ type CellRendererProps<T> = {
 
 function CellRendererComponent<T>(props: CellRendererProps<T>) {
   const { item, index, children, style, onLayout, ...rest } = props;
-  const { keyExtractor, activeKey, activeIndex, pan, panIndex, layouts } =
-    useDragListContext<T>();
+  const {
+    keyExtractor,
+    activeKey,
+    activeIndex,
+    pan,
+    panIndex,
+    layouts,
+    focusedIndex,
+  } = useDragListContext<T>();
   const [isOffset, setIsOffset] = useState(false); // Whether anim != 0
   const key = keyExtractor(item, index);
   const isActive = key === activeKey;

@@ -17,6 +17,7 @@ type ContextProps<T> = {
   pan: Animated.Value;
   panIndex: number;
   layouts: LayoutCache;
+  focusedIndex?: number;
   children: React.ReactNode;
 };
 
@@ -34,10 +35,19 @@ export function DragListProvider<T>({
   panIndex,
   layouts,
   children,
+  focusedIndex,
 }: ContextProps<T>) {
   const value = useMemo(
-    () => ({ activeKey, activeIndex, keyExtractor, pan, panIndex, layouts }),
-    [activeKey, activeIndex, keyExtractor, pan, panIndex, layouts],
+    () => ({
+      activeKey,
+      activeIndex,
+      keyExtractor,
+      pan,
+      panIndex,
+      layouts,
+      focusedIndex,
+    }),
+    [activeKey, activeIndex, keyExtractor, pan, panIndex, layouts, focusedIndex]
   );
 
   return (
@@ -51,7 +61,7 @@ export function useDragListContext<T>() {
   const value = useContext(DragListContext);
   if (!value) {
     throw new Error(
-      "useDragListContext must be called within DragListProvider",
+      "useDragListContext must be called within DragListProvider"
     );
   }
   return value as DragListContextValue<T>;
