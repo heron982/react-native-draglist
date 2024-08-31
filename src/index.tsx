@@ -232,6 +232,10 @@ function DragListImpl<T>(
   }, [data]);
 
   useEffect(() => {
+    console.log("focusedIndex", focusedIndex);
+  }, [focusedIndex]);
+
+  useEffect(() => {
     reorderRef.current = props.onReordered;
   }, [props.onReordered]);
 
