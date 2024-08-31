@@ -422,7 +422,7 @@ function CellRendererComponent<T>(props: CellRendererProps<T>) {
             }
           : {
               elevation: 0,
-              zIndex: props.totalItems - index,
+              zIndex: 0,
               transform: [{ translateY: anim }],
             },
       ]}
