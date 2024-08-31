@@ -76,6 +76,7 @@ interface Props<T> extends Omit<FlatListProps<T>, "renderItem"> {
   onReordered?: (fromIndex: number, toIndex: number) => Promise<void>;
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   onLayout?: (e: LayoutChangeEvent) => void;
+  focusedIndex?: number;
 }
 
 function DragListImpl<T>(
@@ -326,7 +327,9 @@ function DragListImpl<T>(
           keyExtractor={keyExtractor}
           data={data}
           renderItem={renderDragItem}
-          CellRendererComponent={CellRendererComponent}
+          CellRendererComponent={prps =>
+            CellRendererComponent({ ...prps, focusedIndex: props.focusedIndex })
+          }
           extraData={extra}
           scrollEnabled={!activeKey.current}
           onScroll={onDragScroll}
@@ -347,11 +350,12 @@ type CellRendererProps<T> = {
   children: React.ReactNode;
   onLayout?: (e: LayoutChangeEvent) => void;
   style?: StyleProp<ViewStyle>;
-  totalItems: number;
+  focusedIndex?: number;
 };
 
 function CellRendererComponent<T>(props: CellRendererProps<T>) {
-  const { item, index, children, style, onLayout, ...rest } = props;
+  const { item, index, children, style, onLayout, focusedIndex, ...rest } =
+    props;
   const { keyExtractor, activeKey, activeIndex, pan, panIndex, layouts } =
     useDragListContext<T>();
   const [isOffset, setIsOffset] = useState(false); // Whether anim != 0
@@ -420,6 +424,8 @@ function CellRendererComponent<T>(props: CellRendererProps<T>) {
               zIndex: 999,
               transform: [{ translateY: pan }],
             }
+          : focusedIndex !== undefined && focusedIndex === index
+          ? { zIndex: 999 }
           : {
               elevation: 0,
               zIndex: 0,
