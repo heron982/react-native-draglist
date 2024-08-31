@@ -327,7 +327,9 @@ function DragListImpl<T>(
           keyExtractor={keyExtractor}
           data={data}
           renderItem={renderDragItem}
-          CellRendererComponent={CellRendererComponent}
+          CellRendererComponent={({ ...props }) =>
+            CellRendererComponent<T>(props)
+          }
           extraData={extra}
           scrollEnabled={!activeKey.current}
           onScroll={onDragScroll}
