@@ -428,9 +428,7 @@ function CellRendererComponent<T>(props: CellRendererProps<T>) {
       {...rest}
       style={[
         style,
-        focusedIndex !== undefined &&
-          focusedIndex === index && { elevation: 1, zIndex: 999 },
-        isActive
+        isActive || (focusedIndex !== undefined && focusedIndex === index)
           ? {
               elevation: 1,
               zIndex: 999,
