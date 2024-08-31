@@ -326,7 +326,9 @@ function DragListImpl<T>(
           keyExtractor={keyExtractor}
           data={data}
           renderItem={renderDragItem}
-          CellRendererComponent={CellRendererComponent}
+          CellRendererComponent={props =>
+            CellRendererComponent({ ...props, totalItems: data.length })
+          }
           extraData={extra}
           scrollEnabled={!activeKey.current}
           onScroll={onDragScroll}
@@ -347,6 +349,7 @@ type CellRendererProps<T> = {
   children: React.ReactNode;
   onLayout?: (e: LayoutChangeEvent) => void;
   style?: StyleProp<ViewStyle>;
+  totalItems: number;
 };
 
 function CellRendererComponent<T>(props: CellRendererProps<T>) {
@@ -419,7 +422,11 @@ function CellRendererComponent<T>(props: CellRendererProps<T>) {
               zIndex: 999,
               transform: [{ translateY: pan }],
             }
-          : { elevation: 0, zIndex: 0, transform: [{ translateY: anim }] },
+          : {
+              elevation: 0,
+              zIndex: props.totalItems - index,
+              transform: [{ translateY: anim }],
+            },
       ]}
       onLayout={onCellLayout}
     >
