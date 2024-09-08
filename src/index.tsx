@@ -232,10 +232,6 @@ function DragListImpl<T>(
   }, [data]);
 
   useEffect(() => {
-    console.log("focusedIndex", focusedIndex);
-  }, [focusedIndex]);
-
-  useEffect(() => {
     reorderRef.current = props.onReordered;
   }, [props.onReordered]);
 
@@ -436,7 +432,7 @@ function CellRendererComponent<T>(props: CellRendererProps<T>) {
             }
           : {
               elevation: 0,
-              zIndex: 0,
+              zIndex: -1,
               transform: [{ translateY: anim }],
             },
       ]}
